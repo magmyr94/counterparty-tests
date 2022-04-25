@@ -1,0 +1,5 @@
+seleniumbase>=2.4.14
+allure-pytest>=2.9.45
+numpy>=1.22.3
+Faker>=2.8.2
+pytest-rerunfailures>=10.2

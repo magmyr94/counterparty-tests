@@ -1,0 +1,35 @@
+variables:
+  REGISTRY: registry.adata.kz:443
+  IMAGE_NAME: tests/pk-ui-test-py
+  TAG: latest
+
+stages:
+  - clear
+  - build
+
+clean_images:
+  stage: clear
+  tags:
+    - test-dev-node-office
+  script:
+    - docker system prune -f
+    - docker image prune  -a -f
+
+pull_images:
+  stage: build
+  tags:
+    - test-dev-node-office
+  script:
+    - docker pull selenoid/chrome:latest
+    - docker pull selenoid/firefox:88.0
+
+build_images:
+  stage: build
+  tags:
+    - test-dev-node-office
+  script:
+    - docker build -t $IMAGE_NAME .
+    - docker tag $IMAGE_NAME $REGISTRY/$IMAGE_NAME:$TAG
+    - docker push $REGISTRY/$IMAGE_NAME:$TAG
+  only:
+    - master
